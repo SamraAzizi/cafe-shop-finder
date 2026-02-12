@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pakistan Cafe Finder - Discover Best Cafes</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-coffee"></i>
+                    <h1>Pakistan Cafe Finder</h1>
+                </div>
+                <nav class="nav">
+                    <button class="btn-location" id="findMeBtn">
+                        <i class="fas fa-location-crosshairs"></i>
+                        Find Nearby
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="search-section">
+                <h2>Find Your Perfect Cafe</h2>
+                
+                <!-- Search Bar -->
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search cafes by name...">
+                </div>
+
+                <!-- City Filter -->
+                <div class="filter-section">
+                    <label for="cityFilter">
+                        <i class="fas fa-city"></i>
+                        Filter by City
+                    </label>
+                    <select id="cityFilter">
+                        <option value="">All Cities</option>
+                        <option value="Karachi">Karachi</option>
+                        <option value="Lahore">Lahore</option>
+                        <option value="Islamabad">Islamabad</option>
+                        <option value="Rawalpindi">Rawalpindi</option>
+                        <option value="Peshawar">Peshawar</option>
+                        <option value="Multan">Multan</option>
+                        <option value="Faisalabad">Faisalabad</option>
+                        <option value="Quetta">Quetta</option>
+                        <option value="Hyderabad">Hyderabad</option>
+                    </select>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats">
+                    <div class="stat-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="stat-info">
+                            <span class="stat-number" id="totalCafes">0</span>
+                            <span class="stat-label">Cafes Found</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-city"></i>
+                        <div class="stat-info">
+                            <span class="stat-number" id="totalCities">0</span>
+                            <span class="stat-label">Cities</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cafe List -->
+            <div class="cafe-list-container">
+                <h3>Cafes List</h3>
+                <div id="cafeList" class="cafe-list">
+                    <!-- Cafe items will be dynamically inserted here -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- Map Container -->
+        <div class="map-container">
+            <div id="map"></div>
+            <div class="map-overlay" id="loadingOverlay">
+                <div class="spinner"></div>
+                <p>Loading Map...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Cafe Detail Modal -->
+    <div id="cafeModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <div class="modal-header">
+                    <h2 id="modalCafeName"></h2>
+                    <div class="rating" id="modalRating"></div>
+                </div>
+                <div class="modal-details">
+                    <div class="detail-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span id="modalAddress"></span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-city"></i>
+                        <span id="modalCity"></span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-phone"></i>
+                        <span id="modalPhone"></span>
+                    </div>
+                    <div class="detail-item" id="modalDescriptionContainer">
+                        <i class="fas fa-info-circle"></i>
+                        <span id="modalDescription"></span>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-primary" id="modalDirections">
+                        <i class="fas fa-directions"></i>
+                        Get Directions
+                    </button>
+                    <button class="btn-secondary" id="modalViewOnMap">
+                        <i class="fas fa-map"></i>
+                        View on Map
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Pakistan Cafe Finder. Discover the best cafes across Pakistan.</p>
+    </footer>
+
+    <!-- Google Maps JavaScript API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBnuFRTfQKMmS95O9yG0Uoy0iH-UNx67ts&libraries=places&callback=initMap" async defer></script>
+    <script src="js/cafes-data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
