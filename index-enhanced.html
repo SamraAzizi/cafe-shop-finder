@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Discover the best cafes across Pakistan with advanced search, reviews, and route planning">
+    <title>Pakistan Cafe Finder - Advanced Edition</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/style-enhanced.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-coffee"></i>
+                    <h1>Pakistan Cafe Finder</h1>
+                </div>
+                <nav class="nav">
+                    <button class="btn-location" id="findMeBtn" title="Find cafes near you">
+                        <i class="fas fa-location-crosshairs"></i>
+                        Find Nearby
+                    </button>
+                    <button class="btn-primary" id="openRoutePanel" title="Plan your cafe route">
+                        <i class="fas fa-route"></i>
+                        Route <span id="routeCount" class="badge badge-light">0</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="search-section">
+                <h2>Find Your Perfect Cafe</h2>
+                
+                <!-- Stats -->
+                <div class="stats">
+                    <div class="stat-card">
+                        <span class="stat-value" id="totalCafes">0</span>
+                        <span class="stat-label">Cafes</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="totalCities">0</span>
+                        <span class="stat-label">Cities</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="avgRating">0</span>
+                        <span class="stat-label">Avg Rating</span>
+                    </div>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search cafes by name, city, or specialty...">
+                </div>
+
+                <!-- Quick Filters -->
+                <div class="filter-section">
+                    <label for="cityFilter">
+                        <i class="fas fa-city"></i>
+                        Filter by City
+                    </label>
+                    <select id="cityFilter">
+                        <option value="">All Cities</option>
+                        <option value="Karachi">Karachi</option>
+                        <option value="Lahore">Lahore</option>
+                        <option value="Islamabad">Islamabad</option>
+                        <option value="Rawalpindi">Rawalpindi</option>
+                        <option value="Peshawar">Peshawar</option>
+                        <option value="Multan">Multan</option>
+                        <option value="Faisalabad">Faisalabad</option>
+                        <option value="Quetta">Quetta</option>
+                        <option value="Hyderabad">Hyderabad</option>
+                    </select>
+                </div>
+
+                <!-- Advanced Filters -->
+                <div class="advanced-filters">
+                    <div class="filter-group">
+                        <h4><i class="fas fa-star"></i> Minimum Rating</h4>
+                        <select id="ratingFilter">
+                            <option value="0">All Ratings</option>
+                            <option value="4.5">4.5+ Stars</option>
+                            <option value="4.0">4.0+ Stars</option>
+                            <option value="3.5">3.5+ Stars</option>
+                            <option value="3.0">3.0+ Stars</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <h4><i class="fas fa-dollar-sign"></i> Price Range</h4>
+                        <label class="checkbox-label">
+                            <input type="checkbox" class="price-checkbox" value="$">
+                            $ - Budget Friendly
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" class="price-checkbox" value="$$">
+                            $$ - Moderate
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" class="price-checkbox" value="$$$">
+                            $$$ - Upscale
+                        </label>
+                    </div>
+
+                    <div class="filter-group">
+                        <h4><i class="fas fa-sort"></i> Sort By</h4>
+                        <select id="sortSelect">
+                            <option value="rating">Highest Rated</option>
+                            <option value="name">Name (A-Z)</option>
+                            <option value="price-low">Price (Low to High)</option>
+                            <option value="price-high">Price (High to Low)</option>
+                            <option value="distance">Distance</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <h4><i class="fas fa-check-circle"></i> Amenities</h4>
+                        <div id="amenitiesList"></div>
+                    </div>
+
+                    <div class="filter-section">
+                        <button class="btn-secondary" id="resetFiltersBtn" style="width: 100%; margin-top: 1rem;">
+                            <i class="fas fa-redo"></i>
+                            Reset Filters
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="all">
+                        <i class="fas fa-list"></i> All Cafes
+                    </button>
+                    <button class="tab-btn" data-tab="favorites">
+                        <i class="fas fa-heart"></i> Favorites <span id="favoriteCount" class="badge">0</span>
+                    </button>
+                    <button class="tab-btn" data-tab="history">
+                        <i class="fas fa-history"></i> History
+                    </button>
+                </div>
+
+                <!-- Tab Content -->
+                <div id="allTab" class="tab-content active">
+                    <div class="cafe-list" id="cafeList">
+                        <!-- Cafes will be dynamically loaded here -->
+                    </div>
+                </div>
+
+                <div id="favoritesTab" class="tab-content">
+                    <div id="favoritesList">
+                        <!-- Favorites will be loaded here -->
+                    </div>
+                </div>
+
+                <div id="historyTab" class="tab-content">
+                    <div id="historyList">
+                        <!-- History will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Map Container -->
+        <div class="map-container">
+            <div id="map"></div>
+            <div class="map-overlay" id="loadingOverlay">
+                <div class="spinner"></div>
+                <p>Loading Map...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Cafe Detail Modal -->
+    <div id="cafeModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <div class="modal-header">
+                    <h2 id="modalCafeName"></h2>
+                    <div class="rating-row">
+                        <div class="rating" id="modalRating"></div>
+                        <div id="modalPrice"></div>
+                    </div>
+                </div>
+
+                <!-- Images Gallery -->
+                <div id="modalImagesContainer" style="display: none;">
+                    <h3 style="margin-bottom: 1rem;">
+                        <i class="fas fa-images"></i> Photos
+                    </h3>
+                    <div class="modal-images" id="modalImages"></div>
+                </div>
+
+                <div class="modal-details">
+                    <div class="detail-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span id="modalAddress"></span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-city"></i>
+                        <span id="modalCity"></span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-phone"></i>
+                        <span id="modalPhone"></span>
+                    </div>
+                    <div class="detail-item" id="modalHoursContainer">
+                        <i class="fas fa-clock"></i>
+                        <span id="modalHours"></span>
+                    </div>
+                    <div class="detail-item" id="modalDescriptionContainer">
+                        <i class="fas fa-info-circle"></i>
+                        <span id="modalDescription"></span>
+                    </div>
+                </div>
+
+                <!-- Specialties -->
+                <div id="modalSpecialtiesContainer" style="margin-top: 1rem; display: none;">
+                    <h4 style="margin-bottom: 0.5rem;">
+                        <i class="fas fa-star"></i> Specialties
+                    </h4>
+                    <div id="modalSpecialties"></div>
+                </div>
+
+                <!-- Amenities -->
+                <div id="modalAmenitiesContainer" style="margin-top: 1rem; display: none;">
+                    <h4 style="margin-bottom: 0.5rem;">
+                        <i class="fas fa-check-circle"></i> Amenities
+                    </h4>
+                    <div id="modalAmenities" style="display: flex; flex-wrap: wrap; gap: 0.5rem;"></div>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn-primary" id="modalDirections">
+                        <i class="fas fa-directions"></i>
+                        Get Directions
+                    </button>
+                    <button class="btn-secondary" id="modalViewOnMap">
+                        <i class="fas fa-map"></i>
+                        View on Map
+                    </button>
+                    <button class="btn-secondary" id="modalFavorite">
+                        <i class="fas fa-heart"></i>
+                        Add to Favorites
+                    </button>
+                    <button class="btn-secondary" id="modalAddRoute">
+                        <i class="fas fa-route"></i>
+                        Add to Route
+                    </button>
+                </div>
+
+                <!-- Reviews Section -->
+                <div class="reviews-section">
+                    <h3><i class="fas fa-comments"></i> Reviews</h3>
+                    <div id="reviewsList">
+                        <!-- Reviews will be loaded here -->
+                    </div>
+
+                    <!-- Add Review Form -->
+                    <div class="review-form">
+                        <h4 style="margin-bottom: 1rem;">Write a Review</h4>
+                        <div class="form-group">
+                            <label>Your Rating</label>
+                            <div class="rating-input">
+                                <input type="radio" name="review-rating" value="5" id="star5">
+                                <label for="star5"><i class="fas fa-star"></i></label>
+                                <input type="radio" name="review-rating" value="4" id="star4">
+                                <label for="star4"><i class="fas fa-star"></i></label>
+                                <input type="radio" name="review-rating" value="3" id="star3">
+                                <label for="star3"><i class="fas fa-star"></i></label>
+                                <input type="radio" name="review-rating" value="2" id="star2">
+                                <label for="star2"><i class="fas fa-star"></i></label>
+                                <input type="radio" name="review-rating" value="1" id="star1">
+                                <label for="star1"><i class="fas fa-star"></i></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="reviewerName">Your Name (Optional)</label>
+                            <input type="text" id="reviewerName" placeholder="Anonymous">
+                        </div>
+                        <div class="form-group">
+                            <label for="reviewComment">Your Review</label>
+                            <textarea id="reviewComment" placeholder="Share your experience..."></textarea>
+                        </div>
+                        <button class="btn-primary" id="submitReviewBtn">
+                            <i class="fas fa-paper-plane"></i>
+                            Submit Review
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Route Planning Panel -->
+    <div id="routePanel" class="route-panel">
+        <div class="route-header">
+            <h2><i class="fas fa-route"></i> My Route</h2>
+            <button class="btn-icon" id="closeRoutePanel">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="route-content">
+            <div id="routeList">
+                <!-- Route items will be loaded here -->
+            </div>
+        </div>
+        <div class="route-actions">
+            <button class="btn-primary" id="optimizeRouteBtn">
+                <i class="fas fa-map-marked-alt"></i>
+                Optimize & Navigate
+            </button>
+            <button class="btn-secondary" id="clearRouteBtn">
+                <i class="fas fa-trash"></i>
+                Clear Route
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Pakistan Cafe Finder - Advanced Edition. Discover, Review, and Navigate the best cafes across Pakistan.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/cafe-data-enhanced.js"></script>
+    <script src="js/storage-manager.js"></script>
+    <script src="js/filter-manager.js"></script>
+    <script src="js/route-optimizer.js"></script>
+    <script src="js/ui-helpers.js"></script>
+    <script src="js/app-enhanced.js"></script>
+    
+    <!-- Google Maps API -->
+    <script>
+        // Load Google Maps API with callback
+        (function() {
+            const script = document.createElement('script');
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${AppConfig.GOOGLE_MAPS_API_KEY}&libraries=places&callback=initMap`;
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+        })();
+    </script>
+</body>
+</html>
