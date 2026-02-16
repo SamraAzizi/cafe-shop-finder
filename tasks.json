@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "content": "Fix Google Maps API key issue and add environment configuration",
+    "status": "completed"
+  },
+  {
+    "id": "2",
+    "content": "Add advanced search with filters (rating, amenities, price range)",
+    "status": "completed"
+  },
+  {
+    "id": "3",
+    "content": "Implement user reviews and ratings system with local storage",
+    "status": "completed"
+  },
+  {
+    "id": "4",
+    "content": "Add cafe photos gallery and advanced image handling",
+    "status": "completed"
+  },
+  {
+    "id": "5",
+    "content": "Create favorites/bookmarks system with persistence",
+    "status": "completed"
+  },
+  {
+    "id": "6",
+    "content": "Add route optimization for visiting multiple cafes",
+    "status": "completed"
+  }
+]
